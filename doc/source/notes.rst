@@ -91,6 +91,59 @@ Indexing, Slicing and Iterating
     for e in b.flat:
       print(e)
 
+Shape Manipulation
+^^^^^^^^^^^^^^^^^^
+
+* :code:`a.shape:` return the shape of the array.
+* :code:`a.shape = (6, 2)` directly modify the shape.
+* :code:`a.T:` do the transpose.
+* :code:`a.ravel():` make the array flat.
+* :code:`a.resize((3, 4))` modify the array :code:`a` itself, while
+  :code:`a.reshape(2, 6)` returns a copy. Note the arguments are different for the
+  two methods. We can use :code:`a.reshape(3, -1)` to let it decide the size.
+
+Stacking together different arrays
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+* :code:`hstack(), vstack()`: stack array horizontally and vertically.
+* :code:`column_stack()`: stack 1-d array to 2-d array, each 1-d array becomes
+  one column.
+* :code:`a[:, np.newaxis]`: To make a 1-d row array to 2-D column vector.
+
+Splitting one array into several smaller ones
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+* :code:`hsplit, vsplit`
+    * :code:`hsplit(a, 3)`, split the array into 3 parts along the horizontal axis
+    * :code:`hsplit(a, (3, 4))`, split the array after 3rd and 4th column.
+
+View and Copy
+^^^^^^^^^^^^^
+
+* :code:`a = b` doesn't create a copy
+* :code:`a = b.view()`, only creates a view, they share the same data. Change the
+  data in :code:`b` also changes data in :code:`a`.
+* :code:`a = b.copy()` makes a deep copy.
+
+Fancy Indexing
+^^^^^^^^^^^^^^
+
+We will take a case analysis approach, assume :code:`a` is the array, :code:`i`
+and :code:`j` are the index array.
+
+* If :code:`a` is one dimension, :code:`a[i]` is same shape as :code:`i`.
+* If :code:`a` is multidimensional, think of it as an one dimension array along
+  the 1st axis.
+* If :code:`a` is 2-dimension, the :code:`i, j` must be the same shape. :code:`a[i, j]`
+  is the same shape as :code:`i`.
+
+    * :code:`a[i, 2]` is the same shape as :code:`i`.
+    * :code:`a[:, j]` is stack of :code:`a[0, j], a[1, j]` and :code:`a[2, j]`.
+
+* We can also do assignment: :code:`a[i] = 0`;
+* We can even do increament: :code:`a[i] += 1`, but need to be careful if there
+  is duplication in :code:`i`.
+
 Summary of methods
 ^^^^^^^^^^^^^^^^^^
 
@@ -110,8 +163,71 @@ Summary of methods
     np.dot(A, B)
     A.dot(B)
     a.sum(), a.min(axis=0), a.max(axis=1), a.cumsum()
+    a.argmax(), a.argmin()
     np.fromfunction(f, (5, 4), dtype=int)
     b.flat # Arribute
+    ## Shape Manipulation
+    a.reshape(3, 1)
+    a.resize(3, 2)
+    a.ravel()
+    hstack((a, b))
+    vstack((a, b))
+    column_stack((a, b))
+    a[:, newaxis] # To make 2-D column vector
+    np.hsplit(a, )
+    ## View and Copy
+    a.view()
+    a.copy()
+
+pandas
+------
+
+Object creation
+^^^^^^^^^^^^^^^
+
+* series data: :code:`pd.Series([1, 3, 5, np.nan, 6, 8])`
+* data frame:
+
+    * :code:`pd.DataFrame(np.random.randn(6, 4), index=dates, columns=list('ABCD'))`
+    * Dictionary like method::
+
+        df2 = pd.DataFrame({
+          'A': 1.,
+          'B': pd.Timestamp('20130102'),
+          'C': pd.Series(1, index=list(range(4)), dtype='float32'),
+          'D': np.array([3] * 4, dtype='int32'),
+          'E': pd.Categorical(["test", "train", "test", "train"]),
+          'F': 'foo'
+        })
+
+Viewing Data
+^^^^^^^^^^^^
+
+* :code:`df.head()`: top data.
+* :code:`df.tail(3)`: bottom data.
+* :code:`df.index`: get the index.
+* :code:`df.columns`: get the column name.
+* :code:`df.values`: get the contents of the data frame.
+* :code:`df.T`: transpose.
+* :code:`df.sort_index(axis=1, ascending=False)`: sort column.
+* :code:`df.sort_value(by='B')`: sort by values.
+
+Summary of methods
+^^^^^^^^^^^^^^^^^^
+
+* Here is the summary of methods seen so far::
+
+    pd.Series()
+    pd.DataFrame()
+    pd.date_range('20130101', periods=6)
+    pd.head()
+    pd.tail()
+    df.index
+    df.column
+    df.values
+    df.T
+    df.sort_index()
+    df.sort_value()
 
 Chapter 02 Training Machine Learning Algorithms for Classification
 ==================================================================

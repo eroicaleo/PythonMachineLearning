@@ -151,3 +151,49 @@ for row in b:
 
 for e in b.flat:
     print(e)
+
+a = np.floor(10 * np.random.random((3, 4)))
+print(a)
+print(a.shape)
+a.shape = (6, 2)
+print(a)
+print(a.T)
+print(a.ravel())
+
+a.resize((3, 4))
+print(a)
+print(a.reshape(2, -1))
+print(a.reshape(2, -1, 3))
+
+a = np.array([4, 3])
+b = np.array([2, 8])
+print(np.vstack((a, b)))
+print(np.hstack((a, b)))
+print(np.column_stack((a, b)))
+print(np.column_stack((a[:, np.newaxis], b[:, np.newaxis])))
+print(np.vstack((a[:, np.newaxis], b[:, np.newaxis])))
+
+a = np.floor(10*np.random.random((2, 12)))
+print(a)
+print(np.hsplit(a, 3))
+print(np.hsplit(a, (3, 4)))
+print(np.vsplit(a, 2))
+
+time = np.linspace(20, 145, 5)                 # time scale
+data = np.sin(np.arange(20)).reshape(5,4)      # 4 time-dependent series
+print(time)
+print(data)
+ind = data.argmax(axis=0)                   # index of the maxima for each series
+print(ind)
+
+
+time_max = time[ ind]                       # times corresponding to the maxima
+
+data_max = data[ind, range(data.shape[1])] # => data[ind[0],0], data[ind[1],1]...
+
+time_max
+
+data_max
+
+
+np.all(data_max == data.max(axis=0))

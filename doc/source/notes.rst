@@ -212,6 +212,69 @@ Viewing Data
 * :code:`df.sort_index(axis=1, ascending=False)`: sort column.
 * :code:`df.sort_value(by='B')`: sort by values.
 
+Selection
+^^^^^^^^^
+
+* :code:`df['A'], df.A`: select column A.
+* :code:`df[0:3], df['20130102:20130104']`: slices the rows.
+* :code:`df.loc[:, ['A', 'B']]`: select all rows with column 'A' and 'B'.
+* :code:`df.at[dates[0], 'A']`: access a scalar, faster than :code:`df.loc`.
+* :code:`df.iloc[3:5, 0:2]`: access column 3, 4 and row 0, 2 with integer index.
+
+Boolean selection
+
+* :code:`df[df['A'] > 0]`
+* :code:`df[df > 0]`
+* :code:`df2[df2['E'].isin(['two', 'four'])]`
+
+Setting
+
+* Adding a column to a dataframe:
+    * :code:`s1 = pd.Series([1, 2, 3, 4, 5, 6], index=pd.date_range('20130102', periods=6))`
+    * :code:`df['F'] = s1`
+* Assign a numpy array to a column:
+    * :code:`df.loc[:, 'D'] = np.array([5] * len(df))`
+
+Missing Data
+^^^^^^^^^^^^
+
+Useful methos:
+
+* :code:`df.reindex(index=dates[0:4], columns=list(df.columns) + ['E'])`, the new
+  column will be filled with :code:`NaN`.
+* :code:`df.dropna(how='any')`
+* :code:`df.fillna(value=5)`
+* :code:`df.isnall()`
+
+Operations
+^^^^^^^^^^
+
+* :code:`df.mean()`
+* :code:`df.sub(s, axis='index')`
+* :code:`df.apply()`
+* :code:`s = pd.Series(np.random.randint(0, 7, size=10))`, then :code:`s.value_counts()`
+* :code:`s = pd.Series(['A', 'B', 'C', 'Aaba', 'Baca', np.nan, 'CABA', 'dog', 'cat'])`
+* :code:`s.str.lower()`
+
+Merge
+^^^^^
+
+There are 3 ways to merge
+
+* :code:`concat`, :code:`append`: straight forward, just concat and append two
+  dataframe.
+* :code:`join`: SQL like merge.
+
+Grouping
+^^^^^^^^
+
+3 steps in grouping: :code:`f.groupby(['A', 'B']).sum()`
+
+1. split the data
+2. apply a function to each group separately
+3. combining the results to a data structure
+
+
 Summary of methods
 ^^^^^^^^^^^^^^^^^^
 
@@ -228,6 +291,19 @@ Summary of methods
     df.T
     df.sort_index()
     df.sort_value()
+    df.loc['20130102':'20130104',['A','B']] # loc is property
+    df.at[dates[0], 'A']
+    df.iloc[]
+    df.iat[]
+    df.isin()
+    df.reindex(index=dates[0:4], columns=list(df.columns) + ['E'])
+    df.dropna(how='any')
+    df.fillna(value=5)
+    df.isnall()
+    pd.concat()
+    df.append(s, ignore_index=True)
+    pd.merge(left, right)
+    f.groupby(['A', 'B']).sum()
 
 Chapter 02 Training Machine Learning Algorithms for Classification
 ==================================================================

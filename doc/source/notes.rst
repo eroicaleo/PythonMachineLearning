@@ -274,6 +274,21 @@ Grouping
 2. apply a function to each group separately
 3. combining the results to a data structure
 
+Reshaping
+^^^^^^^^^
+
+Creating multiple level index::
+
+  tuples = list(
+  zip(
+      *[
+          ['bar', 'bar', 'baz', 'baz', 'foo', 'foo', 'qux', 'qux'],
+          ['one', 'two', 'one', 'two', 'one', 'two', 'one', 'two']
+      ]
+    )
+  )
+  index = pd.MultiIndex.from_tuples(tuples, names=['first', 'second'])
+  df = pd.DataFrame(np.random.randn(8, 2), index=index, columns=['A', 'B'])
 
 Summary of methods
 ^^^^^^^^^^^^^^^^^^
